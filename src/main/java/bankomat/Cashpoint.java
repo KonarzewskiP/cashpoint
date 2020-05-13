@@ -24,14 +24,14 @@ public class Cashpoint {
     public void execute(Command command) {
         command.execute(user);
         undoStack.offerLast(command);
-        System.out.println("execute " + command);
+        System.out.println(command);
     }
 
     public void undo() {
         if (!undoStack.isEmpty()) {
             Command previousCommand = undoStack.pollLast();
             previousCommand.undo();
-            System.out.println("undo " + previousCommand);
+            System.out.println("Undo: " + previousCommand);
         } else {
             System.out.println("There is no action to undo.");
         }
@@ -44,8 +44,8 @@ public class Cashpoint {
     }
 
     public void printBalance() {
-        System.out.println("Your balance at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
-                "is " + this.user.getAccBalance().setScale(2, RoundingMode.CEILING).toString());
+        System.out.println("Account balance at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
+                " is " + this.user.getAccBalance().setScale(2, RoundingMode.CEILING).toString());
     }
 
     private User getUser(String userAccNumber, List<User> bankUsersList) {
@@ -63,7 +63,7 @@ public class Cashpoint {
         if (user.getAccBalance().longValue() >= Long.parseLong(amount)){
             return true;
         } else {
-            System.out.println("Not sufficient founds.");
+            System.out.println("Insufficient funds to perform this operation.");
             return false;
         }
     }

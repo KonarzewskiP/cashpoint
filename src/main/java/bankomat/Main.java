@@ -127,15 +127,15 @@ public class Main {
     }
 
     public static void printMenu() {
-        System.out.println("help - prints this message\n" +
-                "exit - exit the program\n" +
-                "logout - log out of current session\n" +
-                "history - prints current session's history\n" +
-                "undo - undo last operaton\n" +
-                "withdraw - withdraw <amount>\n" +
-                "deposit - deposit <amount>\n" +
-                "balance - check curent account balance\n" +
-                "transfer - transfer <amount> <target account number> ");
+        System.out.println("\"help\" - prints this message\n" +
+                "\"exit\" - exit the program\n" +
+                "\"logout\" - log out of current session\n" +
+                "\"history\" - prints current session's history\n" +
+                "\"undo\" - undo last operation\n" +
+                "\"withdraw <amount>\" - withdraw \n" +
+                "\"deposit <amount>\" - deposit \n" +
+                "\"balance\" - check current account balance\n" +
+                "\"transfer <amount> <target account #>\" - transfer money from your account to other");
     }
 }
 //    skitchen0,RPTHvOhprmkb,DK4666476382688080
