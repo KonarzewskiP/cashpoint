@@ -75,7 +75,7 @@ public class Main {
                                     break;
                                 case "transfer":
                                     if(checkIfInputAmountIsValid(login[1])) {
-                                        if (checkIfAccExistInBankList(login[2],bankUsers)){
+                                        if (bankUsers.includeAccountNumber(login[2])){
                                             cashpoint.execute(new TransferCommand(login[1],login[2],bankUsers.getListOfBankUsers()));
                                         }
                                     }
@@ -104,15 +104,6 @@ public class Main {
             }
         }
         System.out.println("Bye!");
-    }
-
-    private static boolean checkIfAccExistInBankList(String accNumberToCheck, BankUsers bankUsers) {
-        for (User user :bankUsers.getListOfBankUsers()) {
-            if (user.getAccNumber().equals(accNumberToCheck)){
-                return true;
-            }
-        }
-        return false;
     }
 
     private static boolean checkIfInputAmountIsValid(String amountToCheck) {

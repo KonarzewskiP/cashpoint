@@ -24,12 +24,20 @@ public class BankUsers {
                 .collect(Collectors.toList());
     }
 
-
     private User createSingleUserFromString(String[] userData){
         return User.builder()
                 .accBalance(new BigDecimal(userData[1].substring(1)))
                 .accNumber(userData[0])
                 .build();
 
+    }
+
+    public boolean includeAccountNumber(String accNumberToCheck){
+        for (User user : listOfBankUsers) {
+            if (user.getAccNumber().equals(accNumberToCheck)){
+                return true;
+            }
+        }
+        return false;
     }
 }
