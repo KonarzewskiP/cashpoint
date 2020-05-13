@@ -29,7 +29,6 @@ public class BankUsers {
                 .accBalance(new BigDecimal(userData[1].substring(1)))
                 .accNumber(userData[0])
                 .build();
-
     }
 
     public boolean includeAccountNumber(String accNumberToCheck){
@@ -39,5 +38,14 @@ public class BankUsers {
             }
         }
         return false;
+    }
+
+    public User getUser(String userAccountNumber) {
+        for (User user : listOfBankUsers) {
+            if (user.getAccNumber().equals(userAccountNumber)){
+                return user;
+            }
+        }
+        return null;
     }
 }
