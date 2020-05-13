@@ -16,7 +16,7 @@ public class WithdrawCommand extends Command {
     @Override
     public void execute(User user) {
         oldBalance = user.getAccBalance();
-        user.setAccBalance(user.getAccBalance().subtract(new BigDecimal(this.amount)));
+        setNewAccountBalanceForUser(user);
         this.user = user;
     }
 
@@ -30,5 +30,9 @@ public class WithdrawCommand extends Command {
     @Override
     public String toString() {
         return "Withdraw £" + this.amount + " from account #" + this.user.getAccNumber();
+    }
+
+    private void setNewAccountBalanceForUser(User user){
+        user.setAccBalance(user.getAccBalance().subtract(new BigDecimal(this.amount)));
     }
 }

@@ -17,7 +17,7 @@ public class DepositCommand extends Command{
     @Override
     public void execute(User user) {
         oldBalance = user.getAccBalance();
-        user.setAccBalance(user.getAccBalance().add(new BigDecimal(this.amount)));
+        setNewAccountBalanceForUser(user);
         this.user = user;
     }
 
@@ -32,5 +32,9 @@ public class DepositCommand extends Command{
     @Override
     public String toString() {
         return "Deposit £" + amount + " from account #" + user.getAccNumber();
+    }
+
+    private void setNewAccountBalanceForUser(User user){
+        user.setAccBalance(user.getAccBalance().add(new BigDecimal(this.amount)));
     }
 }
