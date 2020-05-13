@@ -90,7 +90,7 @@ public class Main {
                         } while (cashpointFlag);
                         cashpointFlag = true;
                     } else {
-                        log.info("Wrong login or password!");
+                        System.out.println("Wrong login or password!");
                     }
                 }
             } else if (optionFromMenu) {
