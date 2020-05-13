@@ -106,33 +106,24 @@ public class Main {
         System.out.println("Bye!");
     }
 
-    private static boolean checkIfAccExistInBankList(String accNumberToTransfer, BankUsers bankUsers) {
+    private static boolean checkIfAccExistInBankList(String accNumberToCheck, BankUsers bankUsers) {
         for (User user :bankUsers.getListOfBankUsers()) {
-            if (user.getAccNumber().equals(accNumberToTransfer)){
+            if (user.getAccNumber().equals(accNumberToCheck)){
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean checkIfInputAmountIsValid(String amount) {
+    private static boolean checkIfInputAmountIsValid(String amountToCheck) {
         try {
-            Double.parseDouble(amount);
+            Double.parseDouble(amountToCheck);
             return true;
         } catch (NumberFormatException e) {
-            log.info("\"{}\" is not a valid number.", amount);
+            log.info("\"{}\" is not a valid number.", amountToCheck);
         }
         return false;
     }
-
-//    private static void processCommandAndCheckIfNumberIsValid(Cashpoint cashpoint, Command command, String number){
-//        try {
-//            Double.parseDouble(number);
-//            cashpoint.execute(command);
-//        } catch (NumberFormatException e) {
-//            log.info("\"{}\" is not a valid number.", number);
-//        }
-//    }
 
     private static boolean checkIfCommandInputIsCorrect(String commandUserInput) {
         return Arrays.stream(Menu.values())
