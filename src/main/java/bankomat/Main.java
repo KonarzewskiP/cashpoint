@@ -26,10 +26,10 @@ public class Main {
             String[] login = scanner.nextLine().split(" ");
             boolean optionFromMenu = checkIfCommandInputIsCorrect(login[0]);
 
-            /*
-               Login verification.
-               exception for input without password
-               exception for input login.length > 3
+            /* TODO
+               - Login verification.
+               - exception for input without password
+               - exception for input login.length > 3
              */
 
             if (login.length == 3 && (login[0].equalsIgnoreCase("exit")
