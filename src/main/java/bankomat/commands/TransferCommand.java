@@ -5,7 +5,6 @@ import bankomat.User;
 public class TransferCommand extends Command {
     private final User accountToTransferMoney;
 
-
     public TransferCommand(String amountToTransfer, User accountToTransferMoney) {
         super(amountToTransfer);
         this.accountToTransferMoney = accountToTransferMoney;
@@ -13,10 +12,10 @@ public class TransferCommand extends Command {
 
     @Override
     public void execute(User user) {
-        super.oldBalance = user.getAccBalance();
-        setNewAccountBalanceForUser(user);
-        transferMoneyToAnotherAccount(accountToTransferMoney);
-        super.user = user;
+            super.oldBalance = user.getAccBalance();
+            setNewAccountBalanceForUser(user);
+            transferMoneyToAnotherAccount(accountToTransferMoney);
+            super.user = user;
     }
 
     @Override
@@ -45,10 +44,3 @@ public class TransferCommand extends Command {
         accountToTransferMoney.setAccBalance(accountToTransferMoney.getAccBalance().subtract(super.amount));
     }
 }
-
-//TODO
-//How BigDecimal behave in case of adding negative number
-//BigDecimal var1 = new BigDecimal(100);
-//BigDecimal var2 = new BigDecimal(-50);
-//var1.add(var2);
-//var1.subtract(va2);

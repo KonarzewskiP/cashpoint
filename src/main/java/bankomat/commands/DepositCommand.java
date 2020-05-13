@@ -20,7 +20,6 @@ public class DepositCommand extends Command{
         if (super.oldBalance != null && super.user != null) {
             super.user.setAccBalance(super.oldBalance);
         }
-
     }
 
     @Override

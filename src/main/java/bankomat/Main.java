@@ -27,12 +27,6 @@ public class Main {
             String[] login = scanner.nextLine().split(" ");
             boolean optionFromMenu = checkIfCommandInputIsCorrect(login[0]);
 
-            /* TODO
-               - Login verification.
-               - exception for input without password
-               - exception for input login.length > 3
-             */
-
             if (login.length == 3 && (login[0].equalsIgnoreCase("exit")
                     || login[0].equalsIgnoreCase("login"))) {
                 if (login[0].equalsIgnoreCase("exit")) {
@@ -60,14 +54,16 @@ public class Main {
                                     System.out.println("Logged out.");
                                     break;
                                 case "history":
-                                    cashpoint.history();
+                                    cashpoint.printHistory();
                                     break;
                                 case "undo":
                                     cashpoint.undo();
                                     break;
                                 case "withdraw":
                                     if (checkIfInputAmountIsValid(login[1])) {
-                                        cashpoint.execute(new WithdrawCommand(login[1]));
+                                        if (cashpoint.sufficientFounds(login[1])) {
+                                            cashpoint.execute(new WithdrawCommand(login[1]));
+                                        }
                                     }
                                     break;
                                 case "deposit":
@@ -78,7 +74,9 @@ public class Main {
                                 case "transfer":
                                     if (checkIfInputAmountIsValid(login[1])) {
                                         if (bankUsers.includeAccountNumber(login[2])) {
-                                            cashpoint.execute(new TransferCommand(login[1], bankUsers.getUser(login[2])));
+                                            if (cashpoint.sufficientFounds(login[1])) {
+                                                cashpoint.execute(new TransferCommand(login[1], bankUsers.getUser(login[2])));
+                                            }
                                         }
                                     }
                                     break;
@@ -112,6 +110,9 @@ public class Main {
 
     private static boolean checkIfInputAmountIsValid(String amountToCheck) {
         try {
+            if (amountToCheck.charAt(0) == '-') {
+                throw new NumberFormatException();
+            }
             Double.parseDouble(amountToCheck);
             return true;
         } catch (NumberFormatException e) {

@@ -37,7 +37,7 @@ public class Cashpoint {
         }
     }
 
-    public void history() {
+    public void printHistory() {
         for (Command command : undoStack) {
             System.out.println("[" + command.getTimeOfTransaction() + "] " + command.toString());
         }
@@ -57,6 +57,15 @@ public class Cashpoint {
         }
         log.error("[] does not exist. New User is created.");
         return new User(userAccNumber, new BigDecimal(0));
+    }
+
+    public boolean sufficientFounds(String amount) {
+        if (user.getAccBalance().longValue() >= Long.parseLong(amount)){
+            return true;
+        } else {
+            System.out.println("Not sufficient founds.");
+            return false;
+        }
     }
 
 //
