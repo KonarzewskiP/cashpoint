@@ -9,8 +9,8 @@ public class WithdrawCommand extends Command {
     private BigDecimal oldBalance;
     private User user;
 
-    public WithdrawCommand(String amount) {
-        this.amount = amount;
+    public WithdrawCommand(String amountToWithdraw) {
+        this.amount = amountToWithdraw;
     }
 
     @Override

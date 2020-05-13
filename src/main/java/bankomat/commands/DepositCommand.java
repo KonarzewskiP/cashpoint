@@ -10,8 +10,8 @@ public class DepositCommand extends Command{
     private User user;
 
 
-    public DepositCommand(String amount){
-        this.amount = amount;
+    public DepositCommand(String amountToDeposit){
+        this.amount = amountToDeposit;
     }
 
     @Override
