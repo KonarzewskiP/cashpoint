@@ -9,7 +9,8 @@ public enum Menu {
     WITHDRAW("withdraw"),
     DEPOSIT("deposit"),
     BALANCE("balance"),
-    TRANSFER("transfer");
+    TRANSFER("transfer"),
+    LOGIN("login");
 
     Menu(String instruction) {
     }

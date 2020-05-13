@@ -6,10 +6,8 @@ import java.util.stream.Collectors;
 
 public class BankUsers {
     private final List<User> listOfBankUsers;
-    private final List<String[]> usersFromFile;
 
     public BankUsers(List<String[]> usersFileAsLines){
-        this.usersFromFile = usersFileAsLines;
         this.listOfBankUsers = createUsersListFromFile(usersFileAsLines);
     }
 

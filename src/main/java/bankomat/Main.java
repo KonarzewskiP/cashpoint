@@ -18,6 +18,7 @@ public class Main {
 
         boolean loginFlag = true;
         boolean cashpointFlag = true;
+
         System.out.println("Hello, this is an ATM.");
         while (loginFlag) {
             System.out.println("Type: \"login <acc_number> <password>\" to log in.");
@@ -44,7 +45,8 @@ public class Main {
                         Cashpoint cashpoint = new Cashpoint(userAccNumber, bankUsers.getListOfBankUsers());
                         do {
 
-                            login = scanner.nextLine().toLowerCase().split(" ");
+                            login = scanner.nextLine().split(" ");
+                            login[0] = login[0].toLowerCase();
                             switch (login[0]) {
                                 case "exit":
                                     cashpointFlag = false;
@@ -55,7 +57,7 @@ public class Main {
                                     break;
                                 case "logout":
                                     cashpointFlag = false;
-                                    log.info("Logged out.");
+                                    System.out.println("Logged out.");
                                     break;
                                 case "history":
                                     cashpoint.history();
@@ -84,7 +86,7 @@ public class Main {
                                     printMenu();
                                     break;
                                 default:
-                                    log.info("\"{}\" command not recognize, try again.", login[0]);
+                                    System.out.println("\"" + login[0] + "\" command not recognize, try again.");
                             }
 
                         } while (cashpointFlag);
@@ -96,11 +98,13 @@ public class Main {
             } else if (optionFromMenu) {
                 if (login[0].equalsIgnoreCase("exit")) {
                     loginFlag = false;
+                } else if (login[0].equalsIgnoreCase("login")) {
+                    System.out.println("You need to type: login <login> <password>");
                 } else {
-                    log.info("You need to login first.");
+                    System.out.println("You need to login first.");
                 }
             } else {
-                log.info("command \"{}\" not recognize, try again.", login[0]);
+                System.out.println("command \"" + login[0] + "\" not recognize, try again. !");
             }
         }
         System.out.println("Bye!");
@@ -111,7 +115,7 @@ public class Main {
             Double.parseDouble(amountToCheck);
             return true;
         } catch (NumberFormatException e) {
-            log.info("\"{}\" is not a valid number.", amountToCheck);
+            System.out.println("\"" + amountToCheck + "\" is not a valid number.");
         }
         return false;
     }
