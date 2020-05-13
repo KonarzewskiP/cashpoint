@@ -64,19 +64,19 @@ public class Main {
                                     cashpoint.undo();
                                     break;
                                 case "withdraw":
-                                    if(checkIfInputAmountIsValid(login[1])){
+                                    if (checkIfInputAmountIsValid(login[1])) {
                                         cashpoint.execute(new WithdrawCommand(login[1]));
                                     }
                                     break;
                                 case "deposit":
-                                    if(checkIfInputAmountIsValid(login[1])){
+                                    if (checkIfInputAmountIsValid(login[1])) {
                                         cashpoint.execute(new DepositCommand(login[1]));
                                     }
                                     break;
                                 case "transfer":
-                                    if(checkIfInputAmountIsValid(login[1])) {
-                                        if (bankUsers.includeAccountNumber(login[2])){
-                                            cashpoint.execute(new TransferCommand(login[1],login[2],bankUsers.getListOfBankUsers()));
+                                    if (checkIfInputAmountIsValid(login[1])) {
+                                        if (bankUsers.includeAccountNumber(login[2])) {
+                                            cashpoint.execute(new TransferCommand(login[1], bankUsers.getUser(login[2])));
                                         }
                                     }
                                     break;
