@@ -18,11 +18,11 @@ public class BankUsers {
     private List<User> createUsersListFromFile(List<String[]> usersFileAsLines){
         return usersFileAsLines
                 .stream()
-                .map(this::createSingleUserFromString)
+                .map(this::userMapper)
                 .collect(Collectors.toList());
     }
 
-    private User createSingleUserFromString(String[] userData){
+    private User userMapper(String[] userData){
         return User.builder()
                 .accBalance(new BigDecimal(userData[1].substring(1)))
                 .accNumber(userData[0])
