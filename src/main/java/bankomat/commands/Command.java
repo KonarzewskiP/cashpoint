@@ -1,5 +1,6 @@
 package bankomat.commands;
 
+import bankomat.Account;
 import bankomat.User;
 
 import java.math.BigDecimal;
@@ -10,13 +11,13 @@ public abstract class Command {
     private final LocalDateTime timeOfTransaction = LocalDateTime.now();
     protected final BigDecimal amount;
     protected BigDecimal oldBalance;
-    protected User user;
+    protected Account account;
 
     public Command(String amount) {
         this.amount = new BigDecimal(amount);
     }
 
-    public abstract void execute(User user);
+    public abstract void execute(Account account);
 
     public abstract void undo();
 

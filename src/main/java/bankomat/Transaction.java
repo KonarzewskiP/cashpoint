@@ -12,17 +12,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
-public class Cashpoint {
-    private final User user;
+public class Transaction {
+    private final Account account;
 
-    public Cashpoint(String userAcc, List<User> bankUsersList) {
-        this.user = getUser(userAcc, bankUsersList);
+    public Transaction(Account account) {
+        this.account = account;
     }
 
     private Deque<Command> undoStack = new LinkedList<>();
 
     public void execute(Command command) {
-        command.execute(user);
+        command.execute(account);
         undoStack.offerLast(command);
         System.out.println(command);
     }
@@ -38,17 +38,18 @@ public class Cashpoint {
     }
 
     public void printHistory() {
-        for (Command command : undoStack) {
-            System.out.println("[" + command.getTimeOfTransaction() + "] " + command.toString());
-        }
+        undoStack.
+                forEach(command ->
+                        System.out.println("[" + command.getTimeOfTransaction() + "] " + command.toString()));
     }
+
 
     public void printBalance() {
         System.out.println("Account balance at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) +
-                " is " + this.user.getAccBalance().setScale(2, RoundingMode.CEILING).toString());
+                " is " + this.account.getBalance().setScale(2, RoundingMode.CEILING).toString());
     }
 
-    private User getUser(String userAccNumber, List<User> bankUsersList) {
+/*    private User getUser(String userAccNumber, List<User> bankUsersList) {
 
         for (User user : bankUsersList) {
             if (user.getAccNumber().equals(userAccNumber)) {
@@ -57,10 +58,10 @@ public class Cashpoint {
         }
         log.error("[] does not exist. New User is created.");
         return new User(userAccNumber, new BigDecimal(0));
-    }
+    }*/
 
     public boolean sufficientFounds(String amount) {
-        if (user.getAccBalance().longValue() >= Long.parseLong(amount)){
+        if (account.getBalance().longValue() >= Long.parseLong(amount)) {
             return true;
         } else {
             System.out.println("Insufficient funds to perform this operation.");

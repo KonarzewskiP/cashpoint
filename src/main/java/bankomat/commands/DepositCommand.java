@@ -1,7 +1,6 @@
 package bankomat.commands;
 
-import bankomat.User;
-
+import bankomat.Account;
 public class DepositCommand extends Command{
 
     public DepositCommand(String amountToDeposit){
@@ -9,25 +8,25 @@ public class DepositCommand extends Command{
     }
 
     @Override
-    public void execute(User user) {
-        super.oldBalance = user.getAccBalance();
-        setNewAccountBalanceForUser(user);
-        super.user = user;
+    public void execute(Account account) {
+        super.oldBalance = account.getBalance();
+        setNewAccountBalanceForaccount(account);
+        super.account = account;
     }
 
     @Override
     public void undo() {
-        if (super.oldBalance != null && super.user != null) {
-            super.user.setAccBalance(super.oldBalance);
+        if (super.oldBalance != null && super.account != null) {
+            super.account.setBalance(super.oldBalance);
         }
     }
 
     @Override
     public String toString() {
-        return "Deposit £" + super.amount + " from account #" + super.user.getAccNumber();
+        return "Deposit £" + super.amount + " from account #" + super.account.getAccountNumber();
     }
 
-    private void setNewAccountBalanceForUser(User user){
-        user.setAccBalance(user.getAccBalance().add(super.amount));
+    private void setNewAccountBalanceForaccount(Account account){
+        account.setBalance(account.getBalance().add(super.amount));
     }
 }
