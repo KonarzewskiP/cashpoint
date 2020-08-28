@@ -1,35 +1,35 @@
 package bankomat;
 
 import bankomat.commands.Command;
+import bankomat.commands.Command2;
 import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
 
 @Slf4j
-public class Transaction {
+public class CommandExecutor {
     private final Account account;
 
-    public Transaction(Account account) {
+    public CommandExecutor(Account account) {
         this.account = account;
     }
 
-    private Deque<Command> undoStack = new LinkedList<>();
+    private final Deque<Command> commandHistory = new ArrayDeque<>(); //TODO check if it can hold more than 16 commands
 
     public void execute(Command command) {
-        command.execute(account);
-        undoStack.offerLast(command);
+        command.execute();
+        commandHistory.offerLast(command);
         System.out.println(command);
     }
 
+
     public void undo() {
-        if (!undoStack.isEmpty()) {
-            Command previousCommand = undoStack.pollLast();
+        if (!commandHistory.isEmpty()) {
+            Command previousCommand = commandHistory.pollLast();
             previousCommand.undo();
             System.out.println("Undo: " + previousCommand);
         } else {
@@ -38,9 +38,9 @@ public class Transaction {
     }
 
     public void printHistory() {
-        undoStack.
+        commandHistory.
                 forEach(command ->
-                        System.out.println("[" + command.getTimeOfTransaction() + "] " + command.toString()));
+                        System.out.println("[" + command + "] " + command.toString()));
     }
 
 

@@ -1,47 +1,53 @@
 package bankomat.commands;
 
 import bankomat.Account;
-import bankomat.User;
+import lombok.AllArgsConstructor;
 
-public class TransferCommand extends Command {
-    private final Account accountToTransferMoney;
+import java.math.BigDecimal;
 
-    public TransferCommand(String amountToTransfer, Account accountToTransferMoney) {
-        super(amountToTransfer);
-        this.accountToTransferMoney = accountToTransferMoney;
-    }
+@AllArgsConstructor
+public class TransferCommand implements Command {
+    protected final Account account;
+    protected final BigDecimal amount;
+    private final String accountToTransferMoney;
+    //    protected final BigDecimal balance;
+
+//    public TransferCommand(Account account, BigDecimal amountToDeposit, String accountToTransferMoney) {
+//        this.amount = amountToDeposit;
+//        this.accountToTransferMoney = accountToTransferMoney;
+//    }
 
     @Override
-    public void execute(Account account) {
-            super.oldBalance = account.getBalance();
-            setNewAccountBalanceForUser(account);
-            transferMoneyToAnotherAccount(accountToTransferMoney);
-            super.account = account;
+    public void execute() {
+//            balance = account.getBalance();
+//            setNewAccountBalanceForUser(account);
+//            transferMoneyToAnotherAccount(accountToTransferMoney);
+        account.setBalance(account.getBalance().subtract(amount));
     }
 
     @Override
     public void undo() {
-        if (super.oldBalance != null && super.account != null) {
-            super.account.setBalance(super.oldBalance);
-            undoTransferMoney(accountToTransferMoney);
-        }
+//        if (balance != null && account != null) {
+//            account.setBalance(balance);
+////            undoTransferMoney(accountToTransferMoney);
+//        }
     }
 
     @Override
-    public String toString() {
-        return "Transfer £" + super.amount + " from acc #" + super.account.getAccountNumber() +
-                " to acc #" + accountToTransferMoney.getAccountNumber();
+    public String description() {
+        return "Transfer £" + amount + " from acc #" + account.getAccountNumber() +
+                " to acc #" + accountToTransferMoney;
     }
 
     private void setNewAccountBalanceForUser(Account account) {
-        account.setBalance(account.getBalance().subtract(super.amount));
+        account.setBalance(account.getBalance().subtract(amount));
     }
 
     private void transferMoneyToAnotherAccount(Account accountToTransferMoney) {
-        accountToTransferMoney.setBalance(accountToTransferMoney.getBalance().add(super.amount));
+        accountToTransferMoney.setBalance(accountToTransferMoney.getBalance().add(amount));
     }
 
     private void undoTransferMoney(Account accountToTransferMoney) {
-        accountToTransferMoney.setBalance(accountToTransferMoney.getBalance().subtract(super.amount));
+        accountToTransferMoney.setBalance(accountToTransferMoney.getBalance().subtract(amount));
     }
 }

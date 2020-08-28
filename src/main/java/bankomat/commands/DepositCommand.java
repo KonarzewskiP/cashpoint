@@ -1,32 +1,44 @@
 package bankomat.commands;
 
 import bankomat.Account;
-public class DepositCommand extends Command{
+import lombok.AllArgsConstructor;
 
-    public DepositCommand(String amountToDeposit){
-        super(amountToDeposit);
-    }
+import java.math.BigDecimal;
+
+@AllArgsConstructor
+public class DepositCommand implements Command {
+    protected final BigDecimal amount;
+//    protected final BigDecimal balance;
+    protected final Account account;
+
+
+//    public DepositCommand(Account account, BigDecimal amountToDeposit) {
+//        super(account);
+//        this.amount = amountToDeposit;
+//    }
 
     @Override
-    public void execute(Account account) {
-        super.oldBalance = account.getBalance();
-        setNewAccountBalanceForaccount(account);
-        super.account = account;
+    public void execute() {
+//        balance = account.getBalance();
+//        setNewBalanceForAccount();
+        account.setBalance(account.getBalance().add(amount));
     }
 
     @Override
     public void undo() {
-        if (super.oldBalance != null && super.account != null) {
-            super.account.setBalance(super.oldBalance);
-        }
+//        if (balance != null && account != null) {
+//            account.setBalance(balance);
+//        }
     }
 
     @Override
-    public String toString() {
-        return "Deposit £" + super.amount + " from account #" + super.account.getAccountNumber();
+    public String description() {
+        return "Deposit £" + amount + " to account #" + account.getAccountNumber();
     }
 
-    private void setNewAccountBalanceForaccount(Account account){
-        account.setBalance(account.getBalance().add(super.amount));
+
+
+    private void setNewBalanceForAccount() {
+        account.setBalance(account.getBalance().add(amount));
     }
 }

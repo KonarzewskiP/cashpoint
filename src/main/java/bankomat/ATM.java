@@ -1,8 +1,7 @@
 package bankomat;
 
-import bankomat.commands.DepositCommand;
-import bankomat.commands.TransferCommand;
-import bankomat.commands.WithdrawCommand;
+import bankomat.commands.CommandFactory;
+import bankomat.errors.UnknownCommandException;
 import bankomat.importing.AccountImporter;
 
 import java.util.List;
@@ -18,49 +17,36 @@ public class ATM {
 
     public void run() {
         Scanner sc = new Scanner(System.in);
-        String[] userInput;
+        String input;
 
         System.out.println("Login successful.");
         while (true) {
 
             System.out.print("> ");
-            userInput = sc.nextLine().split(" ");
-            Transaction transaction = new Transaction(account);
-            if (userInput[0].equalsIgnoreCase(Menu.EXIT.toString())) {
+            input = sc.nextLine();
+            CommandExecutor commandExecutor = new CommandExecutor(account);
+            CommandFactory commandFactory = new CommandFactory(account);
+            if (input.equalsIgnoreCase(Menu.EXIT.toString())) {
                 System.out.println("Bye");
                 System.exit(0);
-            } else if (userInput[0].equalsIgnoreCase(Menu.BALANCE.toString())) {
+            } else if (input.equalsIgnoreCase(Menu.BALANCE.toString())) {
                 System.out.println(account.getBalance()); // TODO: check if its working properly. It may show wrong balance
-                transaction.printBalance();
-            } else if (userInput[0].equalsIgnoreCase(Menu.LOGOUT.toString())) {
+                commandExecutor.printBalance();
+            } else if (input.equalsIgnoreCase(Menu.LOGOUT.toString())) {
                 System.out.println("Logged out.");
                 break;
-            } else if (userInput[0].equalsIgnoreCase(Menu.HISTORY.toString())) {
-                transaction.printHistory();
-            } else if (userInput[0].equalsIgnoreCase(Menu.UNDO.toString())) {
-                transaction.undo();
-            } else if (userInput[0].equalsIgnoreCase(Menu.WITHDRAW.toString())) {
-                if (checkIfInputAmountIsValid(userInput[1])) {
-                    if (transaction.sufficientFounds(userInput[1])) {
-                        transaction.execute(new WithdrawCommand(userInput[1]));
-                    }
-                }
-            } else if (userInput[0].equalsIgnoreCase(Menu.DEPOSIT.toString())) {
-                if (checkIfInputAmountIsValid(userInput[1])) {
-                    transaction.execute(new DepositCommand(userInput[1]));
-                }
-//            } else if (userInput[0].equalsIgnoreCase(Menu.TRANSFER.toString())) {
-//                if (checkIfInputAmountIsValid(userInput[1])) {
-//                    if (bankUsers.includeAccountNumber(userInput[2])) {
-//                        if (transaction.sufficientFounds(userInput[1])) {
-//                            transaction.execute(new TransferCommand(userInput[1], bankUsers.getUser(userInput[2])));
-//                        }
-//                    }
-//                }
-            } else if (userInput[0].equalsIgnoreCase(Menu.HELP.toString())) {
+            } else if (input.equalsIgnoreCase(Menu.HISTORY.toString())) {
+                commandExecutor.printHistory();
+            } else if (input.equalsIgnoreCase(Menu.UNDO.toString())) {
+                commandExecutor.undo();
+            } else if (input.equalsIgnoreCase(Menu.HELP.toString())){
                 printMenu();
             } else {
-                System.out.println("\"" + userInput[0] + "\" command not recognize, try again.");
+                try {
+                    commandExecutor.execute(commandFactory.fromUserInput(input));
+                } catch (UnknownCommandException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
@@ -96,5 +82,59 @@ public class ATM {
                 "\"balance\" - check current account balance\n" +
                 "\"transfer <amount> <target account #>\" - transfer money from your account to other");
     }
+
+    public static List<Account> getAllAccount() {
+        return ACCOUNTS;
+    }
 }
 
+
+
+/*    public void run() {
+        Scanner sc = new Scanner(System.in);
+        String input;
+
+        System.out.println("Login successful.");
+        while (true) {
+
+            System.out.print("> ");
+            input = sc.nextLine();
+            Transaction transaction = new Transaction(account);
+            if (input.equalsIgnoreCase(Menu.EXIT.toString())) {
+                System.out.println("Bye");
+                System.exit(0);
+            } else if (input.equalsIgnoreCase(Menu.BALANCE.toString())) {
+                System.out.println(account.getBalance()); // TODO: check if its working properly. It may show wrong balance
+                transaction.printBalance();
+            } else if (input.equalsIgnoreCase(Menu.LOGOUT.toString())) {
+                System.out.println("Logged out.");
+                break;
+            } else if (input.equalsIgnoreCase(Menu.HISTORY.toString())) {
+                transaction.printHistory();
+            } else if (input.equalsIgnoreCase(Menu.UNDO.toString())) {
+                transaction.undo();
+            } else if (input.equalsIgnoreCase(Menu.WITHDRAW.toString())) {
+                if (checkIfInputAmountIsValid(input[1])) {
+                    if (transaction.sufficientFounds(input[1])) {
+                        transaction.execute(new WithdrawCommand(input[1]));
+                    }
+                }
+            } else if (input.equalsIgnoreCase(Menu.DEPOSIT.toString())) {
+                if (checkIfInputAmountIsValid(input[1])) {
+                    transaction.execute(new DepositCommand(input[1]));
+                }
+//            } else if (input[0].equalsIgnoreCase(Menu.TRANSFER.toString())) {
+//                if (checkIfInputAmountIsValid(input[1])) {
+//                    if (bankUsers.includeAccountNumber(input[2])) {
+//                        if (transaction.sufficientFounds(input[1])) {
+//                            transaction.execute(new TransferCommand(input[1], bankUsers.getUser(input[2])));
+//                        }
+//                    }
+//                }
+            } else if (input.equalsIgnoreCase(Menu.HELP.toString())) {
+                printMenu();
+            } else {
+                System.out.println("\"" + input + "\" command not recognize, try again.");
+            }
+        }
+    }*/

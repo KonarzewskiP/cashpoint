@@ -1,34 +1,45 @@
 package bankomat.commands;
 
 import bankomat.Account;
-import bankomat.User;
+import lombok.AllArgsConstructor;
 
-public class WithdrawCommand extends Command {
+import java.math.BigDecimal;
 
-    public WithdrawCommand(String amountToWithdraw) {
-        super(amountToWithdraw);
-    }
+@AllArgsConstructor
+public class WithdrawCommand implements Command {
+    protected final Account account;
+    protected final BigDecimal amount;
+//    protected final BigDecimal balance;
+
+//    public WithdrawCommand(Account account, BigDecimal amountToDeposit) {
+//        this.amount = amountToDeposit;
+//    }
 
     @Override
-    public void execute(Account account) {
-            super.oldBalance = account.getBalance();
-            setNewAccountBalanceForUser(account);
-            super.account = account;
+    public void execute() {
+//        balance = account.getBalance();
+        setNewAccountBalanceForUser(account);
+        account.setBalance(account.getBalance().subtract(amount));
     }
 
     @Override
     public void undo() {
-        if (super.oldBalance != null && super.account != null) {
-            super.account.setBalance(super.oldBalance);
-        }
+//        if (balance != null && account != null) {
+//            account.setBalance(balance);
+//        }
+    }
+
+    @Override
+    public String description() {
+        return null;
     }
 
     @Override
     public String toString() {
-        return "Withdraw £" + super.amount.toString() + " from account #" + super.account.getAccountNumber();
+        return "Withdraw £" + amount.toString() + " from account #" + account.getAccountNumber();
     }
 
     private void setNewAccountBalanceForUser(Account account) {
-        account.setBalance(account.getBalance().subtract(super.amount));
+        account.setBalance(account.getBalance().subtract(amount));
     }
 }
