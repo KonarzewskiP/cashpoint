@@ -37,8 +37,7 @@ public class DepositCommand implements Command {
     }
 
 
-
-    private void setNewBalanceForAccount() {
-        account.setBalance(account.getBalance().add(amount));
-    }
+//    private void setNewBalanceForAccount() {
+//        account.setBalance(account.getBalance().add(amount));
+//    }
 }

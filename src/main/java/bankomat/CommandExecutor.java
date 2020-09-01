@@ -23,7 +23,7 @@ public class CommandExecutor {
     public void execute(Command command) {
         command.execute();
         commandHistory.offerLast(command);
-        System.out.println(command);
+        System.out.println(command.description());
     }
 
 

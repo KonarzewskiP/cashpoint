@@ -17,15 +17,15 @@ public class ATM {
 
     public void run() {
         Scanner sc = new Scanner(System.in);
-        String input;
+        CommandExecutor commandExecutor = new CommandExecutor(account);
+        CommandFactory commandFactory = new CommandFactory(account);
 
         System.out.println("Login successful.");
         while (true) {
 
             System.out.print("> ");
-            input = sc.nextLine();
-            CommandExecutor commandExecutor = new CommandExecutor(account);
-            CommandFactory commandFactory = new CommandFactory(account);
+            String input = sc.nextLine();
+
             if (input.equalsIgnoreCase(Menu.EXIT.toString())) {
                 System.out.println("Bye");
                 System.exit(0);
@@ -39,7 +39,7 @@ public class ATM {
                 commandExecutor.printHistory();
             } else if (input.equalsIgnoreCase(Menu.UNDO.toString())) {
                 commandExecutor.undo();
-            } else if (input.equalsIgnoreCase(Menu.HELP.toString())){
+            } else if (input.equalsIgnoreCase(Menu.HELP.toString())) {
                 printMenu();
             } else {
                 try {
