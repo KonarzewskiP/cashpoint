@@ -1,7 +1,8 @@
 package bankomat;
 
 import bankomat.commands.Command;
-import bankomat.commands.Command2;
+import bankomat.commands.CommandExecution;
+import bankomat.errors.InsufficientFundsException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.RoundingMode;
@@ -9,6 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 @Slf4j
 public class CommandExecutor {
@@ -18,29 +21,32 @@ public class CommandExecutor {
         this.account = account;
     }
 
-    private final Deque<Command> commandHistory = new ArrayDeque<>(); //TODO check if it can hold more than 16 commands
+    private final Stack<CommandExecution> commandHistory = new Stack<>(); //TODO check if it can hold more than 16 commands
 
     public void execute(Command command) {
         command.execute();
-        commandHistory.offerLast(command);
+        commandHistory.push(new CommandExecution(command,LocalDateTime.now()));
         System.out.println(command.description());
     }
 
-
     public void undo() {
-        if (!commandHistory.isEmpty()) {
-            Command previousCommand = commandHistory.pollLast();
+        try {
+            Command previousCommand = commandHistory.pop().getCommand();
             previousCommand.undo();
-            System.out.println("Undo: " + previousCommand);
-        } else {
-            System.out.println("There is no action to undo.");
+            System.out.println("Undo: " + previousCommand.description());
+            printBalance();
+        } catch (EmptyStackException e) {
+            System.out.println("No action done in this  session");
+        } catch (InsufficientFundsException e) {
+            throw new RuntimeException("FATAL: Could not undo command.");
         }
+
     }
 
     public void printHistory() {
         commandHistory.
-                forEach(command ->
-                        System.out.println("[" + command + "] " + command.toString()));
+                forEach(commandExecution ->
+                        System.out.println("[" + commandExecution.getExecutionTime() + "] " +commandExecution.getCommand().description()));
     }
 
 

@@ -14,14 +14,15 @@ public class Account {
     private  String accountNumber;
     private  BigDecimal balance;
 
-    public Account deposit(BigDecimal amount) {
-        return new Account(accountNumber, balance.add(amount));
-    }
+//    public Account deposit(BigDecimal amount) {
+//        return new Account(accountNumber, balance.add(amount));
+//    }
 
-    public Account withdraw(BigDecimal amount) throws InsufficientFundsException {
+    public BigDecimal withdraw(BigDecimal amount) throws InsufficientFundsException {
         if (balance.compareTo(amount) < 0) {
             throw new InsufficientFundsException();
         }
-        return new Account(accountNumber, balance.subtract(amount));
+        return balance.subtract(amount);
     }
+
 }
