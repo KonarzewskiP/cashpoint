@@ -11,7 +11,7 @@ public interface Command {
 
 
 //    public abstract void execute(Account account);
-    public abstract void execute();
+    public abstract void execute() throws InsufficientFundsException;
 
     public abstract void undo() throws InsufficientFundsException;
 
