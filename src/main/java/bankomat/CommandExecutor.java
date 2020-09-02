@@ -24,9 +24,14 @@ public class CommandExecutor {
     private final Stack<CommandExecution> commandHistory = new Stack<>(); //TODO check if it can hold more than 16 commands
 
     public void execute(Command command) {
-        command.execute();
-        commandHistory.push(new CommandExecution(command,LocalDateTime.now()));
-        System.out.println(command.description());
+        try{
+            command.execute();
+            commandHistory.push(new CommandExecution(command,LocalDateTime.now()));
+            System.out.println(command.description());
+        }catch(InsufficientFundsException e) {
+            System.out.println("Not enough founds to perform this operation");
+        }
+
     }
 
     public void undo() {

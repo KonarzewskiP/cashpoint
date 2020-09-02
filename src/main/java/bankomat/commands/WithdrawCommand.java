@@ -1,6 +1,7 @@
 package bankomat.commands;
 
 import bankomat.Account;
+import bankomat.errors.InsufficientFundsException;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -16,30 +17,24 @@ public class WithdrawCommand implements Command {
 //    }
 
     @Override
-    public void execute() {
+    public void execute() throws InsufficientFundsException {
 //        balance = account.getBalance();
-        setNewAccountBalanceForUser(account);
-        account.setBalance(account.getBalance().subtract(amount));
+//        setNewAccountBalanceForUser(account);
+        account.setBalance(account.withdraw(amount));
     }
 
     @Override
     public void undo() {
-//        if (balance != null && account != null) {
-//            account.setBalance(balance);
-//        }
+        account.setBalance(account.getBalance().add(amount));
     }
 
     @Override
     public String description() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
         return "Withdraw £" + amount.toString() + " from account #" + account.getAccountNumber();
     }
 
-    private void setNewAccountBalanceForUser(Account account) {
-        account.setBalance(account.getBalance().subtract(amount));
-    }
+
+//    private void setNewAccountBalanceForUser(Account account) {
+//        account.setBalance(account.getBalance().subtract(amount));
+//    }
 }
