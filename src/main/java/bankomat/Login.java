@@ -2,8 +2,6 @@ package bankomat;
 
 import bankomat.errors.InvalidUserOrPasswordException;
 import bankomat.importing.DateUserImporter;
-import lombok.extern.log4j.Log4j;
-
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
@@ -31,7 +29,6 @@ public final class Login {
                 try {
                     return getUser(login);
                 } catch (InvalidUserOrPasswordException e) {
-//                    System.out.println("Wrong username or password");
                     System.out.println(e.getMessage());
                 }
             } else if (login[0].equalsIgnoreCase("exit")) {

@@ -1,19 +1,13 @@
 package bankomat.commands;
 
-import bankomat.Account;
 import bankomat.errors.InsufficientFundsException;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import bankomat.errors.NoSuchAccountException;
 
 public interface Command {
 
+ void execute() throws InsufficientFundsException, NoSuchAccountException;
 
-//    public abstract void execute(Account account);
-    public abstract void execute() throws InsufficientFundsException;
+void undo() throws InsufficientFundsException, NoSuchAccountException;
 
-    public abstract void undo() throws InsufficientFundsException;
-
-    public abstract String description();
+String description();
 }

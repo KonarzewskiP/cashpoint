@@ -1,6 +1,9 @@
 package bankomat.commands;
 
+import bankomat.ATM;
 import bankomat.Account;
+import bankomat.errors.InsufficientFundsException;
+import bankomat.errors.NoSuchAccountException;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -10,27 +13,19 @@ public class TransferCommand implements Command {
     protected final Account account;
     protected final BigDecimal amount;
     private final String accountToTransferMoney;
-    //    protected final BigDecimal balance;
-
-//    public TransferCommand(Account account, BigDecimal amountToDeposit, String accountToTransferMoney) {
-//        this.amount = amountToDeposit;
-//        this.accountToTransferMoney = accountToTransferMoney;
-//    }
 
     @Override
-    public void execute() {
-//            balance = account.getBalance();
-//            setNewAccountBalanceForUser(account);
-//            transferMoneyToAnotherAccount(accountToTransferMoney);
-        account.setBalance(account.getBalance().subtract(amount));
+    public void execute() throws InsufficientFundsException, NoSuchAccountException {
+        Account accToTransfer = findAccToTransfer();
+        account.setBalance(account.withdraw(amount));
+        accToTransfer.setBalance(accToTransfer.getBalance().add(amount));
     }
 
     @Override
-    public void undo() {
-//        if (balance != null && account != null) {
-//            account.setBalance(balance);
-////            undoTransferMoney(accountToTransferMoney);
-//        }
+    public void undo() throws NoSuchAccountException, InsufficientFundsException {
+        Account accToTransfer = findAccToTransfer();
+        account.setBalance(account.getBalance().add(amount));
+        accToTransfer.setBalance(accToTransfer.withdraw(amount));
     }
 
     @Override
@@ -39,15 +34,10 @@ public class TransferCommand implements Command {
                 " to acc #" + accountToTransferMoney;
     }
 
-    private void setNewAccountBalanceForUser(Account account) {
-        account.setBalance(account.getBalance().subtract(amount));
-    }
-
-    private void transferMoneyToAnotherAccount(Account accountToTransferMoney) {
-        accountToTransferMoney.setBalance(accountToTransferMoney.getBalance().add(amount));
-    }
-
-    private void undoTransferMoney(Account accountToTransferMoney) {
-        accountToTransferMoney.setBalance(accountToTransferMoney.getBalance().subtract(amount));
+    private Account findAccToTransfer() throws NoSuchAccountException {
+        return ATM.getAllAccount().stream()
+                .filter(acc -> acc.getAccountNumber().equals(accountToTransferMoney))
+                .findFirst()
+                .orElseThrow(NoSuchAccountException::new);
     }
 }

@@ -51,19 +51,6 @@ public class ATM {
         }
     }
 
-    private static boolean checkIfInputAmountIsValid(String amountToCheck) {
-        try {
-            if (amountToCheck.charAt(0) == '-') {
-                throw new NumberFormatException();
-            }
-            Double.parseDouble(amountToCheck);
-            return true;
-        } catch (NumberFormatException e) {
-            System.out.println("\"" + amountToCheck + "\" is not a valid number.");
-        }
-        return false;
-    }
-
     private Account getAccount(User user) {
         return ACCOUNTS.stream()
                 .filter(acc -> acc.getAccountNumber().equals(user.getAccNumber()))

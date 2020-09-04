@@ -1,12 +1,10 @@
 package bankomat.commands;
 
-import bankomat.ATM;
 import bankomat.Account;
 import bankomat.Menu;
 import bankomat.errors.UnknownCommandException;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class CommandFactory {
     private final Account account;

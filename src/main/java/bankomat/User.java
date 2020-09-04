@@ -24,10 +24,4 @@ public final class User {
         this.accPassword = accPassword;
         this.accNumber = accNumber;
     }
-
-    public void printBalance(){
-    System.out.println("Your balance at "+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
-                        " is " + accBalance.setScale(2, RoundingMode.CEILING).toString());
-}
-
 }
