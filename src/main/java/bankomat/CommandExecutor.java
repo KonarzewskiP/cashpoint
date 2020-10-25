@@ -4,7 +4,6 @@ import bankomat.commands.Command;
 import bankomat.commands.CommandExecution;
 import bankomat.errors.InsufficientFundsException;
 import bankomat.errors.NoSuchAccountException;
-import lombok.extern.slf4j.Slf4j;
 
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -12,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-@Slf4j
 public class CommandExecutor {
     private final Account account;
 

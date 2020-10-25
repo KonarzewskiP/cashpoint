@@ -1,19 +1,13 @@
 package bankomat;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Main {
 
     public static void main(String[] args) {
 
         while (true) {
-            try {
-                User user = Login.login();
-                new ATM(user).run();
-            } catch (IllegalArgumentException e) {
-                System.out.println("problem");
-            }
+            User user = Login.login();
+            new ATM(user).run();
         }
     }
 }

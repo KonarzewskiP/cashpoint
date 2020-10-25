@@ -24,7 +24,6 @@ public final class Login {
 
             String[] login = sc.nextLine().trim().split(" ");
             boolean optionFromMenu = checkIfCommandInputIsCorrect(login[0]);
-            //TODO check what empty string will return
             if (login[0].equalsIgnoreCase(Menu.LOGIN.toString()) && login.length >= 3) {
                 try {
                     return getUser(login);

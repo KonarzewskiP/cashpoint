@@ -30,7 +30,7 @@ public class ATM {
                 System.out.println("Bye");
                 System.exit(0);
             } else if (input.equalsIgnoreCase(Menu.BALANCE.toString())) {
-                System.out.println(account.getBalance()); // TODO: check if its working properly. It may show wrong balance
+                System.out.println(account.getBalance());
                 commandExecutor.printBalance();
             } else if (input.equalsIgnoreCase(Menu.LOGOUT.toString())) {
                 System.out.println("Logged out.");
@@ -46,6 +46,8 @@ public class ATM {
                     commandExecutor.execute(commandFactory.fromUserInput(input));
                 } catch (UnknownCommandException e) {
                     System.out.println(e.getMessage());
+                } catch (NumberFormatException e){
+                    e.printStackTrace();
                 }
             }
         }

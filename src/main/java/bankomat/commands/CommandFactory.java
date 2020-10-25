@@ -52,6 +52,4 @@ public class CommandFactory {
         BigDecimal amount = new BigDecimal(inputParts[1]);
         return new DepositCommand(amount, account);
     }
-
-
 }
