@@ -1,33 +1,30 @@
 package bankomat.commands;
 
-import bankomat.User;
+import bankomat.Account;
+import bankomat.errors.InsufficientFundsException;
+import lombok.AllArgsConstructor;
 
-public class DepositCommand extends Command{
+import java.math.BigDecimal;
 
-    public DepositCommand(String amountToDeposit){
-        super(amountToDeposit);
+@AllArgsConstructor
+public class DepositCommand implements Command {
+    protected final BigDecimal amount;
+    protected final Account account;
+
+
+    @Override
+    public void execute() {
+        account.setBalance(account.getBalance().add(amount));
     }
 
     @Override
-    public void execute(User user) {
-        super.oldBalance = user.getAccBalance();
-        setNewAccountBalanceForUser(user);
-        super.user = user;
+    public void undo() throws InsufficientFundsException {
+        account.setBalance(account.withdraw(amount));
     }
 
     @Override
-    public void undo() {
-        if (super.oldBalance != null && super.user != null) {
-            super.user.setAccBalance(super.oldBalance);
-        }
+    public String description() {
+        return "Deposit £" + amount + " to account #" + account.getAccountNumber();
     }
 
-    @Override
-    public String toString() {
-        return "Deposit £" + super.amount + " from account #" + super.user.getAccNumber();
-    }
-
-    private void setNewAccountBalanceForUser(User user){
-        user.setAccBalance(user.getAccBalance().add(super.amount));
-    }
 }

@@ -1,46 +1,43 @@
 package bankomat.commands;
 
-import bankomat.User;
+import bankomat.ATM;
+import bankomat.Account;
+import bankomat.errors.InsufficientFundsException;
+import bankomat.errors.NoSuchAccountException;
+import lombok.AllArgsConstructor;
 
-public class TransferCommand extends Command {
-    private final User accountToTransferMoney;
+import java.math.BigDecimal;
 
-    public TransferCommand(String amountToTransfer, User accountToTransferMoney) {
-        super(amountToTransfer);
-        this.accountToTransferMoney = accountToTransferMoney;
+@AllArgsConstructor
+public class TransferCommand implements Command {
+    protected final Account account;
+    protected final BigDecimal amount;
+    private final String accountToTransferMoney;
+
+    @Override
+    public void execute() throws InsufficientFundsException, NoSuchAccountException {
+        Account accToTransfer = findAccToTransfer();
+        account.setBalance(account.withdraw(amount));
+        accToTransfer.setBalance(accToTransfer.getBalance().add(amount));
     }
 
     @Override
-    public void execute(User user) {
-            super.oldBalance = user.getAccBalance();
-            setNewAccountBalanceForUser(user);
-            transferMoneyToAnotherAccount(accountToTransferMoney);
-            super.user = user;
+    public void undo() throws NoSuchAccountException, InsufficientFundsException {
+        Account accToTransfer = findAccToTransfer();
+        account.setBalance(account.getBalance().add(amount));
+        accToTransfer.setBalance(accToTransfer.withdraw(amount));
     }
 
     @Override
-    public void undo() {
-        if (super.oldBalance != null && super.user != null) {
-            super.user.setAccBalance(super.oldBalance);
-            undoTransferMoney(accountToTransferMoney);
-        }
+    public String description() {
+        return "Transfer £" + amount + " from acc #" + account.getAccountNumber() +
+                " to acc #" + accountToTransferMoney;
     }
 
-    @Override
-    public String toString() {
-        return "Transfer £" + super.amount + " from acc #" + super.user.getAccNumber() +
-                " to acc #" + accountToTransferMoney.getAccNumber();
-    }
-
-    private void setNewAccountBalanceForUser(User user) {
-        user.setAccBalance(user.getAccBalance().subtract(super.amount));
-    }
-
-    private void transferMoneyToAnotherAccount(User accountToTransferMoney) {
-        accountToTransferMoney.setAccBalance(accountToTransferMoney.getAccBalance().add(super.amount));
-    }
-
-    private void undoTransferMoney(User accountToTransferMoney) {
-        accountToTransferMoney.setAccBalance(accountToTransferMoney.getAccBalance().subtract(super.amount));
+    private Account findAccToTransfer() throws NoSuchAccountException {
+        return ATM.getAllAccount().stream()
+                .filter(acc -> acc.getAccountNumber().equals(accountToTransferMoney))
+                .findFirst()
+                .orElseThrow(NoSuchAccountException::new);
     }
 }
